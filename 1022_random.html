@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <Style>
+    p
+        {
+            width:120px;
+            height:10px;
+            border:solid 6px red;
+            text-align:center;
+            padding:40px;
+            font-size:20pt;
+        }
+    </Style>
+    
+</head>
+<body style="margin:0px;">
+
+<p>
+    
+</p>
+<form>
+    <input type="button" onclick="launch()" value="啟動">
+    
+</form>
+<script>
+    var num;
+    var random=function(N,M)
+    {
+        var n=N;
+        var m=M;
+        num=Math.floor(Math.random()*(m-n+1)+n);
+       
+        return num;
+        
+    }
+    function launch()
+    {
+       random(1911,2016)
+         
+        d3.select("p").text(num);
+    }
+   
+    
+    </script>
+
+</body>
+</html>
