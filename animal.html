@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+     
+      #map {
+        width:60%;
+        height: 60%;
+      }
+     
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+        
+         .axis path .axis line
+        {
+            fill:none;
+            stroke:black;
+            shape-rendering:auto;
+        }
+        .axis text{
+            font-size:11px;
+            fill:blue;
+        }
+    </style>
+  <title>JS Bin</title>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+ <div id="map"></div>
+
+    <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat:25.037176, lng:121.528808},
+          zoom: 6,
+          mapTypeId:'satellite'
+        });
+          
+        var marker=new google.maps.Marker({
+            position:{lat:25.037176,lng:121.528808},
+            map:map
+        });
+      }
+        
+      var highway =[{"highway_id":"1","highway_count":17347},{"highway_id":"10","highway_count":3055},{"highway_id":"2","highway_count":392},{"highway_id":"3","highway_count":31753},
+      {"highway_id":"3甲","highway_count":152},
+      {"highway_id":"4","highway_count":162},{"highway_id":"5","highway_count":1383},{"highway_id":"6","highway_count":128},{"highway_id":"8","highway_count":128},{"highway_id":"5","highway_count":1383}];
+        
+      var yy=[{"yy":"2009","yy_count":7376},{"yy":"2010","yy_count":7309},
+      {"yy":"2011","yy_count":10459},
+      {"yy":"2012","yy_count":9636},
+      {"yy":"2013","yy_count":6817},
+      {"yy":"2014","yy_count":5478},
+      {"yy":"2015","yy_count":5632},
+      {"yy":"2016","yy_count":1755}];
+        
+     var mm=[{"mm":"1","mm_count":3516},
+      {"mm":"2","mm_count":3263},
+      {"mm":"3","mm_count":4093},
+      {"mm":"4","mm_count":5229},
+      {"mm":"5","mm_count":5982},
+      {"mm":"6","mm_count":5404},
+      {"mm":"7","mm_count":5637},
+      {"mm":"8","mm_count":4680}, 
+      {"mm":"9","mm_count":4565},
+      {"mm":"10","mm_count":4386},
+      {"mm":"11","mm_count":3910},
+      {"mm":"12","mm_count":3797}];
+        
+      var animal=[{"animal_kind":"兩棲類","animal_count":348},
+      {"animal_kind":"其他","animal_count":355},
+      {"animal_kind":"爬蟲類","animal_count":946},
+      {"animal_kind":"哺乳類","animal_count":2460},
+      {"animal_kind":"鳥類","animal_count":38802},
+      {"animal_kind":"飼養養殖","animal_count":11630}];  
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?callback=initMap"
+    async defer></script>
+
+ 
+  
+  
+  <table border="1">
+      <tr>
+          <td>
+             <div id="s1"></div>
+                  <script>
+                var w=300;
+                var h=210;
+                var p=100;
+                svg();
+                bind(highway);
+               
+                render();
+                  function svg()
+                    {
+                        d3.select("#s1")
+                        .append("svg")
+                        .attr({
+                           "width":w,
+                            "height":h,
+                            "id":"svg1"
+                        });
+                    }
+                   
+            function bind(highway)
+            {
+                  console.log(highway);
+                  var selection = d3.select("#svg1")
+                 
+                  .selectAll("rect")
+                  .data(highway);
+                  selection.enter().append("rect");
+                  selection.exit().remove();
+
+                  var selection_text = d3.select("#svg1")
+                  .selectAll("text")
+                  .data(highway);
+                  selection_text.enter().append("text");
+                  selection_text.exit().remove();
+            }
+                      
+           
+                   
+            function render()
+            {
+                var xScale=d3.scale.linear()
+                    .domain([128,31753])
+                    .range([20,80]);
+                          
+                      //var yScale=d3.scale.linear()
+                      
+                      var xAxis=d3.svg.axis()
+                                   .scale(xScale)
+                                   .orient("bottom")
+                                    
+
+                      d3.select("#svg1").selectAll("rect")
+                        .attr({
+                        x: 70,
+                        y: function(d,i){
+                          return 10+20*i;
+                        },
+                        width: function(d,i)
+                        {
+                            return xScale(d.highway_count);
+                        },
+                        height: 18,
+                        fill: "red"
+                      });
+                      d3.select("#svg1").selectAll("text")
+                        .attr({
+                        x: 10,
+                        y: function(d,i){
+                          return 25+20*i;
+                        },
+                      }).text(function(d){
+                        return "國道"+d.highway_id;
+                      });
+                
+                d3.select("svg").append("g")
+                .attr("class","axis")
+                .attr("id","axis-x")
+                .attr("transform","translate(300,250)");
+                    }
+
+        
+    
+              </script>
+        </td>
+          
+          <td>
+               <div id="s2"></div>
+               <script>
+                   var w=300;
+                   var h=210;
+                   var p=100;
+                   svg();
+                   bind(yy);
+                   render();
+                   function svg()
+                   {
+                       d3.select("#s2")
+                       .append("svg")
+                       .attr({
+                           "width":w,
+                           "height":h,
+                           "id":"svg2"
+                       });
+                   }
+                   function bind(yy)
+                   {
+                       console.log(yy);
+                        var selection = d3.select("#svg2")
+                          .selectAll("rect")
+                          .data(yy);
+                          selection.enter().append("rect");
+                          selection.exit().remove(); 
+                       
+                       var selection_text = d3.select("#svg2")
+                          .selectAll("text")
+                          .data(yy);
+                          selection_text.enter().append("text");
+                          selection_text.exit().remove();
+                   }
+                   function render()
+                   {
+                       var yyScale=d3.scale.linear()
+                            .domain([175,10459])
+                            .range([10,100]);
+                       
+                        var xAxis=d3.svg.axis()
+                                   .scale(yyScale)
+                                   .orient("bottom")
+                                    .ticks(5)
+                                    .tickFormat(function(d){
+                                        
+                                    });
+                       
+                      d3.select("#svg2").selectAll("rect")
+                       
+                        .attr({
+                        x: 70,
+                        y: function(d,i){
+                          return 10+20*i;
+                        }, 
+                         width:function(d,i)
+                           {
+                               return yyScale(d.yy_count);
+                           },
+                           height:18,
+                           fill:"red"
+                          
+                          
+                      }); 
+                       
+                       d3.select("#svg2").selectAll("text")
+                        .attr({
+                       x: 10,
+                        y: function(d,i){
+                          return 25+20*i;
+                        },
+                      }).text(function(d){
+                        return d.yy+"年";
+                     });
+                }
+              </script>
+          </td>
+          
+          
+      </tr>
+      
+      <tr>
+         <td>
+              <div id="s3"></div>
+              <script>
+                   var w=300;
+                   var h=210;
+                   var p=100;
+                   svg();
+                   bind(mm);
+                   render();
+                  
+                  function svg()
+                   {
+                       d3.select("#s3")
+                       .append("svg")
+                       .attr({
+                           "width":w,
+                           "height":h,
+                           "id":"svg3"
+                       });
+                   }
+                  
+                  function bind(mm)
+                   {
+                       console.log(mm);
+                        var selection = d3.select("#svg3")
+                          .selectAll("rect")
+                          .data(mm);
+                          selection.enter().append("rect");
+                          selection.exit().remove(); 
+                       
+                       var selection_text = d3.select("#svg3")
+                          .selectAll("text")
+                          .data(mm);
+                          selection_text.enter().append("text");
+                          selection_text.exit().remove();
+                   }
+                  
+                   function render()
+                   {
+                       var mmScale=d3.scale.linear()
+                            .domain([3263,5982])
+                            .range([10,100]);
+                       
+                        var xAxis=d3.svg.axis()
+                                   .scale(mmScale)
+                                   .orient("bottom")
+                                    .ticks(5)
+                                    .tickFormat(function(d){
+                                        
+                                    });
+                       
+                      d3.select("#svg3").selectAll("rect")
+                       
+                        .attr({
+                        x: 70,
+                        y: function(d,i){
+                          return 10+19*i;
+                        }, 
+                         width:function(d,i)
+                           {
+                               return mmScale(d.mm_count);
+                           },
+                           height:18,
+                           fill:"red"
+                          
+                          
+                      }); 
+                       
+                       d3.select("#svg3").selectAll("text")
+                        .attr({
+                       x: 10,
+                        y: function(d,i){
+                          return 25+17*i;
+                        },
+                      }).text(function(d){
+                        return d.mm+"月";
+                     });
+                }
+                  
+              </script>
+              
+          </td>
+         
+          <td>
+              <div id="s4"></div>
+              <script>
+                var w=300;
+                var h=210;
+                var p=100;
+                svg();
+                bind(animal);
+                render();
+                 function svg()
+                 {
+                       d3.select("#s4")
+                       .append("svg")
+                       .attr({
+                           "width":w,
+                           "height":h,
+                           "id":"svg4"
+                       });
+                  }
+                  
+                 function bind(animal)
+                   {
+                       console.log(animal);
+                        var selection = d3.select("#svg4")
+                          .selectAll("rect")
+                          .data(animal);
+                          selection.enter().append("rect");
+                          selection.exit().remove(); 
+                       
+                       var selection_text = d3.select("#svg4")
+                          .selectAll("text")
+                          .data(animal);
+                          selection_text.enter().append("text");
+                          selection_text.exit().remove();
+                   } 
+                  
+                   function render()
+                   {
+                       var animalScale=d3.scale.linear()
+                            .domain([348,38802])
+                            .range([10,100]);
+                       
+                        var xAxis=d3.svg.axis()
+                                   .scale(animalScale)
+                                   .orient("bottom")
+                                    .ticks(5)
+                                    .tickFormat(function(d){
+                                        
+                                    });
+                       
+                      d3.select("#svg4").selectAll("rect")
+                       
+                        .attr({
+                        x: 80,
+                        y: function(d,i){
+                          return 10+20*i;
+                        }, 
+                         width:function(d,i)
+                           {
+                               return animalScale(d.animal_count);
+                           },
+                           height:18,
+                           fill:"red"
+                          
+                          
+                      }); 
+                       
+                       d3.select("#svg4").selectAll("text")
+                        .attr({
+                       x: 10,
+                        y: function(d,i){
+                          return 25+20*i;
+                        },
+                      }).text(function(d){
+                        return d.animal_kind;
+                     });
+                }
+                  
+              </script>
+          </td>
+          
+      </tr>
+  </table>
+  
+     
+</body>
+<script>
+//                                 .domain([0,d3.max(dataSet,function(d){
+//                                     return d.highway_count;
+//                                 })])
+
+ //        for(var i=0;i<dataSet.length;i++)
+//        {
+//           //var x=Math.log(dataSet[i].high_count);    
+//           
+//            var svg=d3.select("svg");
+//            
+//            svg.append("text")
+//                .attr({
+//                    "x":p+43*i+3,
+//                    "y":h-p+25,
+//                   "font-size":13
+//               }).text(dataSet[i].highway_id);
+//            
+//            svg.append("rect")
+//                .attr({
+//                    "x":p+43*i,
+//                    "y":h-p-dataSet[i].highway_count,
+//                    "width":40,
+//                    "height":dataSet[i].highway_count%10000,
+//                      
+//                    "fill":"red"
+//               });
+//            
+//         } 
+ //                                 .domain([0,d3.max(dataSet,function(d){
+//                                     return d.highway_count;
+//                                 })])   
+                                             </script>
+</html>
